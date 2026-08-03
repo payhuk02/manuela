@@ -7,7 +7,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { SiteDataProvider } from "@/hooks/SiteDataContext";
-import { Chatbot } from "@/components/Chatbot";
 import { SiteSeoInjector } from "@/components/SiteSeoInjector";
 import NotFound from "@/pages/NotFound";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -34,7 +33,6 @@ function Providers({ children }: { children: ReactNode }) {
             <AuthProvider>
               <SiteDataProvider>
                 <Suspense fallback={<RouteFallback />}>{children}</Suspense>
-                <Chatbot />
                 <SiteSeoInjector />
                 <CustomCursor />
                 <SiteThemeInjector />

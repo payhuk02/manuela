@@ -14,7 +14,6 @@ import { ArticleDetailPreview } from "./ArticleDetailPreview";
 import { toast } from "sonner";
 import { Trash2, Plus, Upload, Eye, CalendarIcon, Save, X, Star, ArrowUp, ArrowDown } from "lucide-react";
 import { RichEditor } from "./RichEditor";
-import { NewsAiAssistant } from "./NewsAiAssistant";
 import { PerContentSeoPanel } from "./PerContentSeoPanel";
 import { pingSeo } from "@/lib/seoPing";
 import { sanitizeHtml, isRichTextEmpty } from "@/lib/sanitize";
@@ -497,28 +496,6 @@ export const NewsAdmin = () => {
                   className="font-mono text-sm"
                 />
               </div>
-
-              {/* AI assistant */}
-              <NewsAiAssistant
-                lang={n.lang}
-                contentType={n.content_type}
-                title={n.title}
-                body={n.body}
-                excerpt={n.excerpt}
-                category={n.category}
-                onApply={(patch) => {
-                  const safe: Partial<News> = {};
-                  if (patch.title !== undefined) safe.title = patch.title;
-                  if (patch.excerpt !== undefined) safe.excerpt = sanitizeHtml(patch.excerpt);
-                  if (patch.body !== undefined) safe.body = sanitizeHtml(patch.body);
-                  if (patch.seo_title !== undefined) safe.seo_title = patch.seo_title;
-                  if (patch.seo_description !== undefined) safe.seo_description = patch.seo_description;
-                  if (patch.slug !== undefined) safe.slug = patch.slug;
-                  setItems((p) => p.map((i) => (i.id === n.id ? { ...i, ...safe } : i)));
-                  update(n.id, safe);
-                }}
-                onCoverImage={async (file) => { await uploadCover(n.id, file); }}
-              />
 
               {/* Per-article SEO */}
               <PerContentSeoPanel

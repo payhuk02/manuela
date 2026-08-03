@@ -21,8 +21,6 @@ import { ExpertisesPageAdmin } from "@/components/admin/ExpertisesPageAdmin";
 import { NewsPageAdmin } from "@/components/admin/NewsPageAdmin";
 import { TeamPageAdmin } from "@/components/admin/TeamPageAdmin";
 import { UsersAdmin } from "@/components/admin/UsersAdmin";
-import { ChatbotAdmin } from "@/components/admin/ChatbotAdmin";
-import { EditorialAiAdmin } from "@/components/admin/EditorialAiAdmin";
 import { LandingPagesAdmin } from "@/components/admin/LandingPagesAdmin";
 import { BusinessCardAdmin } from "@/components/admin/BusinessCardAdmin";
 import { ThemeAdmin } from "@/components/admin/ThemeAdmin";
@@ -43,8 +41,6 @@ import {
   Home,
   Building,
   Inbox,
-  Bot,
-  Lock,
   QrCode,
   Palette,
 } from "lucide-react";
@@ -63,18 +59,6 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-
-const CHATBOT_PIN = "2485";
-const CHATBOT_PIN_STORAGE = "rv_chatbot_admin_unlocked";
 
 type TabKey =
   | "home"
@@ -94,8 +78,6 @@ type TabKey =
   | "team_page"
   | "contact"
   | "contact_messages"
-  | "chatbot"
-  | "editorial_ai"
   | "landing_pages"
   | "business_card"
   | "users"
@@ -114,8 +96,6 @@ const NAV: { key: TabKey; label: string; icon: typeof FileText; section: string;
   { key: "contact", label: "Contact", icon: Phone, section: "/#contact" },
   { key: "business_card", label: "Carte de visite (QR code)", icon: QrCode, section: "/carte" },
   { key: "contact_messages", label: "Demandes de contact", icon: Inbox, section: "/admin", adminOnly: true },
-  { key: "chatbot", label: "Chatbot IA", icon: Bot, section: "/", adminOnly: true },
-  { key: "editorial_ai", label: "Assistant Rédaction IA", icon: Sparkles, section: "/admin", adminOnly: true },
   { key: "header_footer", label: "Header & Footer", icon: ScrollText, section: "/" },
   { key: "seo", label: "SEO — Référencement", icon: Search, section: "/" },
   { key: "landing_pages", label: "SEO — Pages géo (Paris/Abidjan)", icon: Search, section: "/" },
@@ -131,13 +111,6 @@ const Admin = () => {
   const { session, isStaff, isAdmin, loading, signOut, user } = useAuth();
   const [tab, setTab] = useState<TabKey>("home");
   const [serverCheck, setServerCheck] = useState<"pending" | "allowed" | "denied">("pending");
-  const [chatbotUnlocked, setChatbotUnlocked] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return sessionStorage.getItem(CHATBOT_PIN_STORAGE) === "1";
-  });
-  const [pinDialogOpen, setPinDialogOpen] = useState(false);
-  const [pinInput, setPinInput] = useState("");
-  const [pinError, setPinError] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "Admin — Manuela DIABATE";
@@ -173,29 +146,6 @@ const Admin = () => {
   const items = NAV.filter((n) => !n.adminOnly || isAdmin);
   const current = items.find((i) => i.key === tab) ?? items[0];
 
-  const requestTab = (key: TabKey) => {
-    if (key === "chatbot" && !chatbotUnlocked) {
-      setPinInput("");
-      setPinError(null);
-      setPinDialogOpen(true);
-      return;
-    }
-    setTab(key);
-  };
-
-  const submitPin = () => {
-    if (pinInput.trim() === CHATBOT_PIN) {
-      sessionStorage.setItem(CHATBOT_PIN_STORAGE, "1");
-      setChatbotUnlocked(true);
-      setPinDialogOpen(false);
-      setPinInput("");
-      setPinError(null);
-      setTab("chatbot");
-    } else {
-      setPinError("Code incorrect");
-    }
-  };
-
   return (
     <SidebarProvider>
       <div className="admin-sidebar min-h-screen flex w-full bg-secondary/30">
@@ -215,20 +165,16 @@ const Admin = () => {
                   {items.map((item) => {
                     const Icon = item.icon;
                     const active = tab === item.key;
-                    const locked = item.key === "chatbot" && !chatbotUnlocked;
                     return (
                       <SidebarMenuItem key={item.key}>
                         <SidebarMenuButton
                           isActive={active}
                           tooltip={item.label}
-                          onClick={() => requestTab(item.key)}
+                          onClick={() => setTab(item.key)}
                           className={cn(active && "bg-sidebar-accent text-sidebar-accent-foreground")}
                         >
                           <Icon className="h-4 w-4" />
-                          <span className="flex items-center gap-2">
-                            {item.label}
-                            {locked && <Lock className="h-3 w-3 opacity-70" />}
-                          </span>
+                          <span>{item.label}</span>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     );
@@ -297,53 +243,12 @@ const Admin = () => {
             {tab === "team_page" && <TeamPageAdmin />}
             {tab === "contact" && <ContactAdmin />}
             {tab === "contact_messages" && isAdmin && <ContactMessagesAdmin />}
-            {tab === "chatbot" && isAdmin && chatbotUnlocked && <ChatbotAdmin />}
-            {tab === "editorial_ai" && isAdmin && <EditorialAiAdmin />}
             {tab === "landing_pages" && <LandingPagesAdmin />}
             {tab === "business_card" && <BusinessCardAdmin />}
             {tab === "users" && isAdmin && <UsersAdmin />}
           </main>
         </div>
       </div>
-
-      <Dialog open={pinDialogOpen} onOpenChange={(o) => { setPinDialogOpen(o); if (!o) { setPinInput(""); setPinError(null); } }}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Lock className="h-4 w-4" /> Accès protégé — Chatbot IA
-            </DialogTitle>
-            <DialogDescription>
-              Saisissez le code d'accès pour ouvrir la configuration du Chatbot IA.
-            </DialogDescription>
-          </DialogHeader>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitPin();
-            }}
-            className="space-y-3"
-          >
-            <Input
-              autoFocus
-              type="password"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              value={pinInput}
-              onChange={(e) => { setPinInput(e.target.value); setPinError(null); }}
-              placeholder="Code"
-              className="text-center tracking-[0.5em] font-mono text-lg"
-              maxLength={12}
-            />
-            {pinError && <p className="text-xs text-destructive text-center">{pinError}</p>}
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setPinDialogOpen(false)}>
-                Annuler
-              </Button>
-              <Button type="submit" variant="gold">Déverrouiller</Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
     </SidebarProvider>
   );
 };
