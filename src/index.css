@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cabinet Manuela DIABATE — Design System
+   Bleu, Blanc, Noir
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    /* Premium Blue */
+    --primary: 217 91% 33%; /* Royal Blue */
+    --primary-foreground: 0 0% 100%; /* White */
+    --primary-glow: 217 91% 40%;
+
+    --secondary: 210 20% 98%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 15% 45%;
+
+    /* Accent - Noir/Dark Grey */
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+    --accent-soft: 0 0% 95%;
+
+    /* CTA */
+    --appointment: 217 91% 33%;
+    --appointment-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Noir used for dark backgrounds */
+    --night: 0 0% 5%;
+
+    /* Statuts éditoriaux (admin previews) */
+    --status-live: 152 60% 38%;
+    --status-live-foreground: 0 0% 100%;
+    --status-draft: 38 92% 52%;
+    --status-draft-foreground: 0 0% 5%;
+
+    /* WhatsApp brand */
+    --whatsapp: 142 70% 49%;
+    --whatsapp-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 217 91% 33%;
+
+    --radius: 0.25rem;
+
+    /* Gradients */
+    --gradient-night: linear-gradient(135deg, hsl(0 0% 5%) 0%, hsl(0 0% 15%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(217 91% 33%) 0%, hsl(217 91% 25%) 100%); /* Renamed gradient-gold to use blue but keep class name for now */
+    --gradient-overlay: linear-gradient(180deg, hsl(0 0% 0% / 0.55) 0%, hsl(0 0% 0% / 0.85) 100%);
+
+    /* Shadows */
+    --shadow-elegant: 0 30px 80px -30px hsl(0 0% 0% / 0.2);
+    --shadow-gold: 0 20px 50px -20px hsl(217 91% 33% / 0.3); /* Uses primary blue */
+    --shadow-soft: 0 8px 30px -10px hsl(0 0% 0% / 0.1);
+
+    /* Transitions */
+    --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Admin sidebar */
+  .admin-sidebar {
+    --sidebar-background: 217 91% 33%;          
+    --sidebar-foreground: 0 0% 100%;          
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 217 91% 33%;
+    --sidebar-accent: 217 91% 25%;              
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 217 91% 25%;
+    --sidebar-ring: 210 90% 70%;
+  }
+
+  .dark {
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 50%; /* Brighter blue for dark mode */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 0 0% 95%; /* White accent */
+    --accent-foreground: 0 0% 5%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 217 91% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .container-luxe {
+    @apply mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-16;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-accent font-medium;
+  }
+
+  .eyebrow::before {
+    content: "";
+    @apply block h-px w-8 bg-accent;
+  }
+
+  .gold-divider {
+    @apply h-px w-16 bg-gradient-to-r from-accent to-transparent;
+  }
+
+  .link-underline {
+    @apply relative after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-500 hover:after:w-full;
+  }
+}
+
+@layer utilities {
+  .bg-night { 
+    background: var(--gradient-night); 
+    --primary-foreground: 36 33% 97%; /* Force white foreground on dark backgrounds */
+    --foreground: 36 33% 97%;
+  }
+  .bg-gold { background: var(--gradient-gold); }
+  .text-gold { color: hsl(var(--accent)); }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .shadow-gold { box-shadow: var(--shadow-gold); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .ease-luxe { transition-timing-function: var(--ease-luxe); }
+}
+
+/* === Article interactions animations === */
+@keyframes like-burst {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--r, 0deg)) translateY(-2px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--r, 0deg)) translateY(-14px) scale(0.4);
+  }
+}
+
+@keyframes like-ring {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.6;
+  }
+  100% {
+    width: 36px;
+    height: 36px;
+    opacity: 0;
+    margin-left: -18px;
+    margin-top: -18px;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Image rendering helpers ===
+   `.img-crisp` applies a tasteful unsharp-mask + saturation lift on the
+   browser side so resized photos stay razor-sharp on retina screens without
+   ever touching the underlying file. Use on hero / card / editorial images.
+*/
+.img-crisp {
+  filter: contrast(1.04) saturate(1.05) drop-shadow(0 0 0 transparent);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+}
+
+@supports (image-rendering: auto) {
+  .img-crisp {
+    image-rendering: auto;
+  }
+}

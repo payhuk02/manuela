@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /*?lang=en
+Disallow: /*&lang=en
+
+Sitemap: https://www.diabate-avocat.com/sitemap.xml

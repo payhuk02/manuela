@@ -1,0 +1,1 @@
+ALTER TABLE public.contact_info ADD COLUMN IF NOT EXISTS linkedin_url text NOT NULL DEFAULT '';

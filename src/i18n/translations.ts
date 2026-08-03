@@ -1,0 +1,206 @@
+export type Lang = "fr" | "en";
+
+export const translations = {
+  fr: {
+    nav: {
+      home: "Accueil",
+      about: "Cabinet",
+      practice: "Expertises",
+      team: "Équipe",
+      news: "Actu/Articles",
+      contact: "Contact",
+      appointment: "Prendre rendez-vous",
+    },
+    hero: {
+      eyebrow: "Cabinet d'avocats international",
+      title: "L'excellence juridique,\nau service de vos ambitions.",
+      subtitle:
+        "Manuela DIABATE accompagne entreprises et dirigeants dans leurs opérations stratégiques, en France et à l'international.",
+      cta: "Prendre rendez-vous",
+      ctaSecondary: "Découvrir le cabinet",
+    },
+    about: {
+      eyebrow: "Cabinet",
+      title: "Une tradition d'excellence,\nun regard contemporain.",
+      p1: "Fondé sur des valeurs d'exigence, de discrétion et d'engagement, Manuela DIABATE réunit des avocats reconnus pour leur expertise sectorielle et leur sens de la stratégie.",
+      p2: "Nous intervenons auprès de groupes internationaux, ETI, fonds d'investissement et dirigeants dans les opérations les plus complexes.",
+      presentation: {
+        p1: "Avocate passionnée et dévouée, Maître Manuela DIABATE a toujours placé la quête de la justice au cœur de sa vocation. Inscrite au Barreau, elle défend avec conviction et humanité les droits de ceux qu'elle accompagne.",
+        p2: "Son lien avec le droit s'est forgé sur une conviction intime : chaque individu mérite une défense juste, éclairée et combative. C'est cette volonté de rétablir l'équilibre et de protéger les plus vulnérables qui l'a guidée tout au long de son parcours.",
+        p3: "La création de son propre cabinet est l'aboutissement naturel de cet engagement. Elle a souhaité bâtir une structure à son image : accessible, rigoureuse et profondément humaine, où la relation de confiance avec le client prime sur toute autre considération.",
+        p4: "Forte d'une expertise reconnue, notamment en droit des étrangers, de la nationalité et en droit de la famille, elle aborde chaque dossier avec la même détermination : celle de faire triompher le droit et la justice.",
+        p5: "Le Cabinet Manuela DIABATE n'est pas seulement un lieu d'expertise juridique, c'est un espace de protection et d'accompagnement où votre voix sera entendue et vos intérêts défendus avec une inébranlable pugnacité.",
+      },
+      stats: [
+        { value: "25+", label: "Années d'expérience" },
+        { value: "12", label: "Associés & collaborateurs" },
+        { value: "40", label: "Juridictions couvertes" },
+      ],
+    },
+    practice: {
+      eyebrow: "Nos expertises",
+      title: "Des conseils sur mesure pour\nles enjeux les plus exigeants.",
+      items: [
+        { title: "Droit des affaires", desc: "Structuration, gouvernance et opérations stratégiques pour entreprises et dirigeants." },
+        { title: "Fusions & Acquisitions", desc: "Conseil intégré sur les opérations transfrontalières et les restructurations." },
+        { title: "Arbitrage international", desc: "Représentation devant les principales institutions arbitrales mondiales." },
+        { title: "Droit fiscal", desc: "Optimisation, contentieux et conformité fiscale internationale." },
+        { title: "Contentieux & Litige", desc: "Défense devant les juridictions civiles, commerciales et administratives." },
+        { title: "Droit immobilier", desc: "Acquisition, financement et structuration d'actifs immobiliers complexes." },
+      ],
+    },
+    team: {
+      eyebrow: "Notre équipe",
+      title: "Des avocats engagés,\ndes parcours d'exception.",
+      members: [
+        { name: "Maître Alexandre Laurent", role: "Associé fondateur — M&A", bio: "30 ans d'expérience auprès de grands groupes industriels." },
+        { name: "Maître Hélène Moreau", role: "Associée — Arbitrage international", bio: "Reconnue parmi les meilleures praticiennes en arbitrage CCI." },
+        { name: "Maître Julien Bernard", role: "Counsel — Droit fiscal", bio: "Expert en fiscalité transfrontalière et contentieux fiscal." },
+      ],
+    },
+    news: {
+      eyebrow: "Actualités",
+      title: "Décryptages & publications",
+      readMore: "Lire l'article",
+      seeAll: "Voir toutes les actualités",
+      items: [],
+    },
+    articles: {
+      eyebrow: "Articles",
+      title: "Analyses juridiques de fond",
+      subtitle:
+        "Tribunes, doctrine et publications signées par le cabinet sur les évolutions du droit.",
+      readMore: "Lire l'analyse",
+      seeAll: "Voir tous les articles",
+      empty: "Aucun article publié pour le moment.",
+    },
+    newsPage: {
+      title: "Actualités & Articles",
+      subtitle:
+        "Suivez la vie du cabinet et nos analyses juridiques de fond.",
+      newsEyebrow: "Actualités",
+      newsTitle: "Vie du cabinet",
+      newsEmpty: "Aucune actualité publiée pour le moment.",
+    },
+    contact: {
+      eyebrow: "Contact",
+      title: "Discutons de votre projet.",
+      subtitle: "Notre équipe vous répond sous 24 heures ouvrées.",
+      name: "Nom complet",
+      email: "Adresse e-mail",
+      phone: "Téléphone",
+      message: "Votre message",
+      submit: "Envoyer la demande",
+      success: "Message envoyé. Nous vous recontacterons rapidement.",
+      address: "12 avenue Foch, 75116 Paris",
+      hours: "Lun – Ven · 9h – 19h",
+    },
+    footer: {
+       tagline: "Cabinet Manuela DIABATE",
+      rights: "Tous droits réservés.",
+      legal: "Mentions légales",
+      privacy: "Confidentialité",
+    },
+  },
+  en: {
+    nav: {
+      home: "Home",
+      about: "The Firm",
+      practice: "Practice Areas",
+      team: "Team",
+      news: "News/Articles",
+      contact: "Contact",
+      appointment: "Book a meeting",
+    },
+    hero: {
+      eyebrow: "International law firm",
+      title: "Legal excellence,\nfor your boldest ambitions.",
+      subtitle:
+        "Manuela DIABATE advises companies and leaders on strategic operations, in France and around the world.",
+      cta: "Book a meeting",
+      ctaSecondary: "Discover the firm",
+    },
+    about: {
+      eyebrow: "The Firm",
+      title: "A tradition of excellence,\na contemporary vision.",
+      p1: "Built on demanding standards, discretion and commitment, Manuela DIABATE brings together lawyers recognized for their sector expertise and strategic insight.",
+      p2: "We advise international groups, mid-cap companies, investment funds and executives on their most complex matters.",
+      presentation: {
+        p1: "A passionate and committed lawyer, admitted to the Paris Bar, Maître MANUELA VANGAH represents his clients with rigour and determination, in both advisory and litigation matters.",
+        p2: "Drawing on a rich professional background, Maître VANGAH has practised in leading law firms in Côte d'Ivoire and France, as well as within international companies. These varied experiences have enabled him to develop a comprehensive and pragmatic approach to legal issues, meeting the requirements of a diverse clientele.",
+        p3: "A law graduate from Côte d'Ivoire, Maître VANGAH has an in-depth command of OHADA law (Organisation for the Harmonisation of Business Law in Africa). Combined with his practice of French law, this expertise gives him a unique ability to handle complex cross-border matters, bridging African and European legal systems.",
+        p4: "This dual Franco-African expertise allows him to address complex international issues with precision across several areas of law, including business law (companies, banking and finance, shareholder disputes…), real-estate law (leases, co-ownership, construction), and immigration law (visas, residence permits, naturalisation, asylum).",
+        p5: "Maître MANUELA VANGAH is committed to defending your interests with passion, rigour and determination, offering you tailored legal support adapted to your specific needs.",
+      },
+      stats: [
+        { value: "25+", label: "Years of experience" },
+        { value: "12", label: "Partners & associates" },
+        { value: "40", label: "Jurisdictions covered" },
+      ],
+    },
+    practice: {
+      eyebrow: "Our expertise",
+      title: "Tailored counsel for\nthe most demanding matters.",
+      items: [
+        { title: "Corporate Law", desc: "Structuring, governance and strategic operations for companies and executives." },
+        { title: "Mergers & Acquisitions", desc: "Integrated advice on cross-border deals and restructurings." },
+        { title: "International Arbitration", desc: "Representation before leading global arbitral institutions." },
+        { title: "Tax Law", desc: "Planning, litigation and international tax compliance." },
+        { title: "Litigation & Disputes", desc: "Defence before civil, commercial and administrative courts." },
+        { title: "Real Estate", desc: "Acquisition, financing and structuring of complex real estate assets." },
+      ],
+    },
+    team: {
+      eyebrow: "Our team",
+      title: "Committed lawyers,\nexceptional careers.",
+      members: [
+        { name: "Alexandre Laurent", role: "Founding Partner — M&A", bio: "30 years advising leading industrial groups." },
+        { name: "Hélène Moreau", role: "Partner — International Arbitration", bio: "Recognized among the leading ICC arbitration practitioners." },
+        { name: "Julien Bernard", role: "Counsel — Tax Law", bio: "Expert in cross-border taxation and tax litigation." },
+      ],
+    },
+    news: {
+      eyebrow: "Insights",
+      title: "Analysis & publications",
+      readMore: "Read article",
+      seeAll: "See all news",
+      items: [],
+    },
+    articles: {
+      eyebrow: "Articles",
+      title: "In-depth legal analyses",
+      subtitle:
+        "Op-eds, doctrine and publications by the firm on legal developments.",
+      readMore: "Read analysis",
+      seeAll: "See all articles",
+      empty: "No article published yet.",
+    },
+    newsPage: {
+      title: "News & Articles",
+      subtitle:
+        "Follow the firm's news and our in-depth legal analyses.",
+      newsEyebrow: "News",
+      newsTitle: "Firm news",
+      newsEmpty: "No news published yet.",
+    },
+    contact: {
+      eyebrow: "Contact",
+      title: "Let's discuss your matter.",
+      subtitle: "Our team will reply within 24 business hours.",
+      name: "Full name",
+      email: "Email address",
+      phone: "Phone",
+      message: "Your message",
+      submit: "Send request",
+      success: "Message sent. We will get back to you shortly.",
+      address: "12 avenue Foch, 75116 Paris",
+      hours: "Mon – Fri · 9am – 7pm",
+    },
+    footer: {
+       tagline: "Cabinet Manuela DIABATE",
+      rights: "All rights reserved.",
+      legal: "Legal notice",
+      privacy: "Privacy",
+    },
+  },
+} as const;

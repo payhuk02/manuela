@@ -1,0 +1,1 @@
+drop policy if exists "Editor media is publicly readable" on storage.objects;

@@ -1,0 +1,1 @@
+UPDATE public.expertises SET title = 'Droit pénal et droit pénal des affaires' WHERE id = '1769e9e5-6fb7-415b-b51a-028fa2c0992a';
