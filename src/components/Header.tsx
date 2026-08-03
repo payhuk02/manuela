@@ -55,14 +55,14 @@ export const Header = () => {
             <img
               src={logoDark}
               alt="CABINET Manuela DIABATE"
-              className="h-5 md:h-7 xl:h-8 w-auto shrink-0 hidden dark:block"
+              className="h-10 md:h-12 xl:h-14 w-auto shrink-0 hidden dark:block"
             />
           )}
           {logoLight && (
             <img
               src={logoLight}
               alt="CABINET Manuela DIABATE"
-              className="h-5 md:h-7 xl:h-8 w-auto shrink-0 dark:hidden"
+              className="h-10 md:h-12 xl:h-14 w-auto shrink-0 dark:hidden"
             />
           )}
         </a>
