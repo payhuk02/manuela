@@ -657,53 +657,58 @@ const HorizontalPricingCard = ({
   cta: string;
   href?: string;
   useAppointmentSelector?: boolean;
-}) => (
-  <div className="flex flex-col md:flex-row items-center justify-between bg-card/10 backdrop-blur-sm border border-border/20 rounded-xl p-4 md:p-6 shadow-sm hover:bg-card/20 hover:border-accent/30 transition-all duration-300">
-    <div className="flex items-center gap-6 w-full md:w-auto">
-      <div className="shrink-0 flex items-center justify-center w-14 h-14 rounded-full bg-background border border-accent/20 shadow-inner">
-        {icon}
+}) => {
+  const ctaContent = (
+    <span className="flex items-center justify-center gap-2 text-center leading-snug">
+      {cta}
+      <ChevronRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+    </span>
+  );
+
+  const buttonClassName =
+    "group w-full min-h-11 px-4 py-3 text-[11px] uppercase tracking-[0.12em] sm:text-xs sm:tracking-[0.15em] lg:w-auto lg:min-w-[11rem] lg:max-w-[15rem]";
+
+  return (
+    <div className="flex flex-col gap-5 rounded-xl border border-border/20 bg-card/10 p-4 shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-accent/30 hover:bg-card/20 sm:gap-6 sm:p-5 md:flex-row md:items-stretch md:justify-between md:p-6 lg:items-center">
+      <div className="flex min-w-0 flex-1 items-start gap-4 sm:gap-6 md:items-center">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-accent/20 bg-background shadow-inner sm:h-14 sm:w-14">
+          {icon}
+        </div>
+        <div className="min-w-0 flex-1">
+          <h3 className="font-serif text-lg text-primary-foreground sm:text-xl md:text-2xl">{title}</h3>
+          <p className="mt-1 text-sm leading-relaxed text-primary-foreground/70">{desc}</p>
+        </div>
       </div>
-      <div className="flex flex-col">
-        <h3 className="font-serif text-xl md:text-2xl text-primary-foreground">{title}</h3>
-        <p className="mt-1 text-sm text-primary-foreground/70">{desc}</p>
+
+      <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between md:w-auto md:min-w-[10.5rem] md:max-w-[14rem] md:flex-col md:items-stretch md:justify-center lg:min-w-[22rem] lg:max-w-none lg:flex-row lg:items-center lg:justify-end lg:gap-6">
+        <div className="flex items-baseline gap-2 sm:shrink-0 lg:min-w-[7.5rem] lg:justify-end">
+          <span className="font-serif text-3xl text-primary-foreground sm:text-4xl">{price}</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/50 sm:text-xs">TTC</span>
+        </div>
+
+        {useAppointmentSelector ? (
+          <AppointmentButton
+            variant="gold"
+            size="lg"
+            className={buttonClassName}
+            showIcon={false}
+            label={ctaContent}
+          />
+        ) : (
+          <Button asChild variant="gold" size="lg" className={buttonClassName}>
+            <a
+              href={href}
+              target={href?.startsWith("http") ? "_blank" : undefined}
+              rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+            >
+              {ctaContent}
+            </a>
+          </Button>
+        )}
       </div>
     </div>
-    
-    <div className="flex items-center gap-6 mt-6 md:mt-0 w-full md:w-auto justify-between md:justify-end">
-      <div className="flex items-baseline gap-2 min-w-[120px] justify-end">
-        <span className="font-serif text-3xl md:text-4xl text-primary-foreground">{price}</span>
-        <span className="text-xs uppercase tracking-[0.2em] text-primary-foreground/50">TTC</span>
-      </div>
-      
-      {useAppointmentSelector ? (
-        <AppointmentButton
-          variant="gold"
-          size="lg"
-          className="w-full md:w-48 whitespace-nowrap group"
-          showIcon={false}
-          label={
-            <span className="flex items-center justify-center gap-2">
-              {cta}
-              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </span>
-          }
-        />
-      ) : (
-        <Button asChild variant="gold" size="lg" className="w-full md:w-48 group">
-          <a
-            href={href}
-            target={href?.startsWith("http") ? "_blank" : undefined}
-            rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
-            className="flex items-center justify-center gap-2"
-          >
-            {cta}
-            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </a>
-        </Button>
-      )}
-    </div>
-  </div>
-);
+  );
+};
 
 
 export default Contact;
