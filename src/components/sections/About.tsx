@@ -43,33 +43,19 @@ export const About = () => {
     <section id="about" className="py-28 md:py-36 bg-background">
       <div className="container-luxe grid gap-12 lg:gap-16 items-start lg:grid-cols-12">
         <div className="lg:col-span-6 flex justify-center lg:justify-start">
-          <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl mx-auto lg:mx-0 group">
-            {/* Halo doré diffus */}
-            <div
-              aria-hidden
-              className="absolute -inset-10 -z-20 rounded-[2.5rem] opacity-60 blur-3xl transition-opacity duration-700 group-hover:opacity-80"
-              style={{
-                background:
-                  "radial-gradient(60% 60% at 50% 50%, hsl(var(--accent) / 0.30), transparent 70%)",
-              }}
-            />
-            {/* Cadre or décalé */}
-            <div className="absolute -inset-4 border border-accent/40 rounded-3xl -z-10 translate-x-4 translate-y-4" />
-            {/* Ombre douce sous la photo */}
-            <div
-              aria-hidden
-              className="absolute inset-x-8 -bottom-6 h-12 -z-10 rounded-full blur-2xl bg-primary/40"
-            />
-            <img
-              src={useCmsPortrait ? portraitSrc : ""}
-              sizes="(min-width: 1280px) 560px, (min-width: 1024px) 480px, (min-width: 640px) 420px, 92vw"
-              alt="Portrait de Maître Manuela DIABATE, avocat expert en droit des affaires"
-              loading="lazy"
-              decoding="async"
-              width={848}
-              height={1264}
-              className="w-full aspect-[3/4] sm:aspect-[2/3] object-cover object-top rounded-3xl ring-1 ring-accent/30 shadow-[0_30px_60px_-20px_hsl(var(--primary)/0.45),0_18px_40px_-25px_hsl(var(--accent)/0.35)] transition-transform duration-700 ease-luxe group-hover:-translate-y-1"
-            />
+          <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl mx-auto lg:mx-0">
+            {useCmsPortrait ? (
+              <img
+                src={portraitSrc}
+                sizes="(min-width: 1280px) 560px, (min-width: 1024px) 480px, (min-width: 640px) 420px, 92vw"
+                alt="Portrait de Maître Manuela DIABATE, avocat expert en droit des affaires"
+                loading="lazy"
+                decoding="async"
+                width={848}
+                height={1264}
+                className="w-full aspect-[3/4] sm:aspect-[2/3] object-cover object-top"
+              />
+            ) : null}
           </div>
         </div>
 

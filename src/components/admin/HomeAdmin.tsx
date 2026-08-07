@@ -19,7 +19,14 @@ const GROUPS: GroupDef[] = [
     label: "Hero — Intro statique (portrait + texte)",
     keys: [
       { key: "hero.static.show", label: "Afficher le hero statique", defaultValue: "oui" },
-      { key: "hero.static.image", label: "Portrait (URL) — laissez vide pour l'image par défaut", defaultValue: "", clearable: true },
+      {
+        key: "hero.static.image",
+        label: "Portrait du hero statique",
+        defaultValue: "",
+        clearable: true,
+        image: true,
+        hint: "Image distincte de la section Présentation. Format portrait recommandé. Téléversez puis sauvegardez.",
+      },
       {
         key: "hero.static.tagline",
         label: "Accroche",

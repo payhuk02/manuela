@@ -2,18 +2,12 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLang } from "@/i18n/LanguageContext";
 import { useText } from "@/hooks/useText";
-import { ResponsiveImage, type ResponsivePicture } from "@/components/ResponsiveImage";
-// eslint-disable-next-line import/no-unresolved
-import imgCabinetDiabate from "@/assets/hero-cabinet-diabate.jpg?responsive";
-
-const defaultPortrait = imgCabinetDiabate as unknown as ResponsivePicture;
 
 export const StaticHero = () => {
   const { lang } = useLang();
 
   const show = useText("hero.static.show", "oui") === "oui";
-  const customImage = useText("hero.static.image", "");
-  const portraitFromAbout = useText("about.portrait", "");
+  const imageUrl = useText("hero.static.image", "");
 
   const tagline = useText(
     "hero.static.tagline",
@@ -40,8 +34,6 @@ export const StaticHero = () => {
 
   if (!show) return null;
 
-  const imageUrl = customImage || portraitFromAbout;
-
   return (
     <section
       id="intro"
@@ -49,7 +41,7 @@ export const StaticHero = () => {
       className="relative bg-[#f8f8f8] dark:bg-secondary/40 border-b border-border/40 pt-16 lg:pt-0"
     >
       <div className="grid lg:grid-cols-2 min-h-[480px] lg:min-h-[560px]">
-        <div className="relative h-[380px] sm:h-[440px] lg:h-auto overflow-hidden">
+        <div className="relative h-[380px] sm:h-[440px] lg:h-auto overflow-hidden bg-[#ececec]">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -58,16 +50,7 @@ export const StaticHero = () => {
               decoding="async"
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
-          ) : (
-            <ResponsiveImage
-              data={defaultPortrait}
-              alt={name}
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              loading="eager"
-              className="absolute inset-0 h-full w-full object-cover object-top"
-              pictureClassName="absolute inset-0 h-full w-full"
-            />
-          )}
+          ) : null}
         </div>
 
         <div className="flex flex-col items-center justify-center px-8 py-12 sm:px-12 lg:px-16 lg:py-20 text-center">
@@ -98,7 +81,7 @@ export const StaticHero = () => {
 
           <Link
             to="/contact"
-            className="mt-8 inline-flex items-center gap-3 bg-primary px-7 py-3.5 font-serif text-sm italic text-primary-foreground transition-colors hover:bg-primary/90"
+            className="mt-8 inline-flex items-center gap-3 rounded-full bg-primary px-7 py-3.5 font-serif text-sm italic text-primary-foreground transition-colors hover:bg-primary/90"
           >
             {cta}
             <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={1.5} aria-hidden />

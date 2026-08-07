@@ -85,16 +85,16 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  /* Admin sidebar */
+  /* Admin sidebar — #0c1c36 */
   .admin-sidebar {
-    --sidebar-background: 217 91% 33%;          
-    --sidebar-foreground: 0 0% 100%;          
+    --sidebar-background: 214 64% 13%;
+    --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 0 0% 100%;
-    --sidebar-primary-foreground: 217 91% 33%;
-    --sidebar-accent: 217 91% 25%;              
+    --sidebar-primary-foreground: 214 64% 13%;
+    --sidebar-accent: 214 55% 18%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 217 91% 25%;
-    --sidebar-ring: 210 90% 70%;
+    --sidebar-border: 214 50% 20%;
+    --sidebar-ring: 214 45% 35%;
   }
 
   .dark {

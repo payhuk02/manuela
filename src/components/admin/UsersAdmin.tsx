@@ -18,7 +18,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, UserPlus, Trash2, Shield, ShieldOff } from "lucide-react";
+import { Loader2, UserPlus, Trash2, Shield, ShieldOff, Crown } from "lucide-react";
 
 type Role = "admin" | "editor";
 type ManagedUser = {
@@ -31,6 +31,8 @@ type ManagedUser = {
 
 const FUNCTION_NAME = "admin-users";
 
+const roleLabel = (role: Role) => (role === "admin" ? "Super administrateur" : "Éditeur");
+
 export function UsersAdmin() {
   const { toast } = useToast();
   const [users, setUsers] = useState<ManagedUser[]>([]);
@@ -39,6 +41,8 @@ export function UsersAdmin() {
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<Role>("editor");
   const [inviting, setInviting] = useState(false);
+  const [promoteEmail, setPromoteEmail] = useState("");
+  const [promoting, setPromoting] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -78,14 +82,14 @@ export function UsersAdmin() {
 
   const grantRole = async (user_id: string, role: Role) => {
     if (await callAction({ type: "set_role", user_id, role }, `${user_id}-${role}-grant`)) {
-      toast({ title: "Rôle attribué" });
+      toast({ title: `${roleLabel(role)} attribué` });
       load();
     }
   };
 
   const revokeRole = async (user_id: string, role: Role) => {
     if (await callAction({ type: "remove_role", user_id, role }, `${user_id}-${role}-revoke`)) {
-      toast({ title: "Rôle retiré" });
+      toast({ title: `${roleLabel(role)} retiré` });
       load();
     }
   };
@@ -117,8 +121,62 @@ export function UsersAdmin() {
     load();
   };
 
+  const promoteExistingSuperAdmin = async () => {
+    if (!promoteEmail.trim()) return;
+    setPromoting(true);
+    const { data, error } = await supabase.functions.invoke(FUNCTION_NAME, {
+      body: { type: "grant_by_email", email: promoteEmail.trim(), role: "admin" },
+    });
+    setPromoting(false);
+    if (error || (data as { error?: string })?.error) {
+      toast({
+        title: "Promotion échouée",
+        description: error?.message ?? (data as { error?: string }).error,
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Super administrateur ajouté",
+      description: promoteEmail.trim(),
+    });
+    setPromoteEmail("");
+    load();
+  };
+
   return (
     <div className="space-y-8">
+      <Card className="p-6 space-y-4">
+        <div>
+          <h3 className="font-serif text-xl text-primary flex items-center gap-2">
+            <Crown className="h-5 w-5" />
+            Ajouter un super administrateur
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Pour un compte déjà inscrit sur le site : saisissez l'email et confirmez pour lui
+            accorder tous les droits d'administration.
+          </p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+          <div className="space-y-1">
+            <Label htmlFor="promote-email">Email du compte existant</Label>
+            <Input
+              id="promote-email"
+              type="email"
+              placeholder="manueladiabate.avocat@gmail.com"
+              value={promoteEmail}
+              onChange={(e) => setPromoteEmail(e.target.value)}
+            />
+          </div>
+          <div className="flex items-end">
+            <Button onClick={promoteExistingSuperAdmin} disabled={promoting || !promoteEmail.trim()}>
+              {promoting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Crown className="h-4 w-4" />}
+              Promouvoir super admin
+            </Button>
+          </div>
+        </div>
+      </Card>
+
       <Card className="p-6 space-y-4">
         <div>
           <h3 className="font-serif text-xl text-primary">Inviter un utilisateur</h3>
@@ -140,12 +198,12 @@ export function UsersAdmin() {
           <div className="space-y-1">
             <Label htmlFor="invite-role">Rôle</Label>
             <Select value={inviteRole} onValueChange={(v) => setInviteRole(v as Role)}>
-              <SelectTrigger id="invite-role" className="w-36">
+              <SelectTrigger id="invite-role" className="w-44">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="editor">Éditeur</SelectItem>
-                <SelectItem value="admin">Administrateur</SelectItem>
+                <SelectItem value="admin">Super administrateur</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -192,7 +250,7 @@ export function UsersAdmin() {
                       {u.roles.length === 0 && (
                         <Badge variant="outline" className="text-xs">Aucun rôle</Badge>
                       )}
-                      {isAdmin && <Badge className="text-xs">Administrateur</Badge>}
+                      {isAdmin && <Badge className="text-xs">Super administrateur</Badge>}
                       {isEditor && <Badge variant="secondary" className="text-xs">Éditeur</Badge>}
                     </div>
                   </div>
@@ -216,7 +274,7 @@ export function UsersAdmin() {
                           ) : (
                             <Shield className="h-3 w-3" />
                           )}
-                          {has ? `Retirer ${role === "admin" ? "admin" : "éditeur"}` : `Promouvoir ${role === "admin" ? "admin" : "éditeur"}`}
+                          {has ? `Retirer ${roleLabel(role).toLowerCase()}` : `Promouvoir ${roleLabel(role).toLowerCase()}`}
                         </Button>
                       );
                     })}

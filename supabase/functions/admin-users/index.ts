@@ -9,6 +9,7 @@ const corsHeaders = {
 type Action =
   | { type: "list" }
   | { type: "invite"; email: string; role: "admin" | "editor" }
+  | { type: "grant_by_email"; email: string; role: "admin" | "editor" }
   | { type: "set_role"; user_id: string; role: "admin" | "editor" }
   | { type: "remove_role"; user_id: string; role: "admin" | "editor" }
   | { type: "delete_user"; user_id: string };
@@ -148,6 +149,37 @@ Deno.serve(async (req) => {
         { role: body.role },
       );
       return new Response(JSON.stringify({ ok: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (body.type === "grant_by_email") {
+      const email = body.email.trim();
+      if (!email) {
+        return new Response(JSON.stringify({ error: "Email requis." }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const { data: userId, error } = await admin.rpc("grant_role_by_email", {
+        _email: email,
+        _role: body.role,
+      });
+      if (error) {
+        const msg = error.message.includes("USER_NOT_FOUND")
+          ? "Aucun compte inscrit avec cet email. L'utilisateur doit d'abord créer un compte."
+          : error.message;
+        return new Response(JSON.stringify({ error: msg }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      await logAudit(
+        "role.grant_by_email",
+        { type: "user", id: userId as string, email },
+        { role: body.role },
+      );
+      return new Response(JSON.stringify({ ok: true, user_id: userId }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
