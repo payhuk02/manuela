@@ -3,7 +3,6 @@ import { Menu, X } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 import { useText } from "@/hooks/useText";
 import { LangSwitcher } from "./LangSwitcher";
-import { ThemeToggle } from "./ThemeToggle";
 import { MagneticButton } from "./MagneticButton";
 
 import { useLogo } from "@/hooks/useLogos";
@@ -72,7 +71,7 @@ export const Header = () => {
             <a
               key={l.href}
               href={l.href}
-              className="link-underline text-[13px] xl:text-sm tracking-wide hover:text-white/80 transition-colors whitespace-nowrap text-appointment-foreground"
+              className="link-underline text-sm tracking-wide hover:text-white/80 transition-colors whitespace-nowrap text-appointment-foreground"
             >
               {l.label}
             </a>
@@ -80,7 +79,6 @@ export const Header = () => {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
-          <ThemeToggle />
           <LangSwitcher />
           <MagneticButton>
             <AppointmentButton
@@ -123,10 +121,7 @@ export const Header = () => {
               </a>
             ))}
             <div className="mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-12 border-t border-border/20 pt-8">
-              <div className="flex gap-4 items-center">
-                <ThemeToggle />
-                <LangSwitcher variant="dark" />
-              </div>
+              <LangSwitcher variant="dark" />
               <div onClick={() => setOpen(false)}>
                 <AppointmentButton size="default" showIcon={false} label={navAppointment} />
               </div>

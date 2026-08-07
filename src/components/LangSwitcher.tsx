@@ -1,40 +1,53 @@
+import { ChevronDown } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+
+const LANGUAGES = [
+  { code: "fr" as const, label: "Français", short: "FR" },
+  { code: "en" as const, label: "English", short: "EN" },
+];
 
 export const LangSwitcher = ({ variant = "light" }: { variant?: "light" | "dark" }) => {
   const { lang, setLang } = useLang();
-  
-  const containerStyle = variant === "dark" 
-    ? "bg-primary-foreground/5 border-primary-foreground/10" 
-    : "bg-primary/5 border-primary/10";
-    
-  const inactiveStyle = variant === "dark"
-    ? "text-primary-foreground/60 hover:text-primary-foreground"
-    : "text-primary/60 hover:text-primary";
+  const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
+
+  const triggerStyle =
+    variant === "dark"
+      ? "border-primary-foreground/10 bg-primary-foreground/5 text-primary-foreground hover:border-primary-foreground/25"
+      : "border-primary/10 bg-primary/5 text-primary hover:border-primary/25";
 
   return (
-    <div className={`flex items-center p-1 rounded-full border backdrop-blur-sm transition-all hover:border-accent/40 ${containerStyle}`}>
-      <button
-        onClick={() => setLang("fr")}
-        className={`relative px-3 py-1 text-[11px] font-medium tracking-[0.15em] rounded-full transition-all duration-300 ${
-          lang === "fr" 
-            ? "text-primary-foreground bg-accent shadow-[0_2px_10px_-2px_hsl(var(--accent)/0.5)]" 
-            : inactiveStyle
-        }`}
-        aria-label="Français"
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-medium tracking-[0.15em] backdrop-blur-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          triggerStyle
+        )}
+        aria-label="Choisir la langue"
       >
-        FR
-      </button>
-      <button
-        onClick={() => setLang("en")}
-        className={`relative px-3 py-1 text-[11px] font-medium tracking-[0.15em] rounded-full transition-all duration-300 ${
-          lang === "en" 
-            ? "text-primary-foreground bg-accent shadow-[0_2px_10px_-2px_hsl(var(--accent)/0.5)]" 
-            : inactiveStyle
-        }`}
-        aria-label="English"
-      >
-        EN
-      </button>
-    </div>
+        {current.short}
+        <ChevronDown className="h-3 w-3 opacity-70" aria-hidden />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[9rem]">
+        {LANGUAGES.map((item) => (
+          <DropdownMenuItem
+            key={item.code}
+            onClick={() => setLang(item.code)}
+            className={cn(
+              "cursor-pointer text-xs tracking-wide",
+              lang === item.code && "font-semibold text-primary"
+            )}
+          >
+            {item.short} — {item.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

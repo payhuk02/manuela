@@ -180,8 +180,7 @@ export default function Carte() {
             {data.cabinet}
           </p>
           <h1
-            className="mt-3 text-3xl leading-tight"
-            style={{ fontFamily: "Cormorant Garamond, serif", fontWeight: 500 }}
+            className="mt-3 font-serif text-3xl font-medium leading-tight"
           >
             {data.name}
           </h1>
@@ -194,8 +193,7 @@ export default function Carte() {
           </div>
           {data.tagline && (
             <p
-              className="mt-4 max-w-[22rem] text-sm italic text-primary-foreground/70"
-              style={{ fontFamily: "Cormorant Garamond, serif" }}
+              className="mt-4 max-w-[22rem] text-sm font-accent italic text-primary-foreground/70"
             >
               {data.tagline}
             </p>

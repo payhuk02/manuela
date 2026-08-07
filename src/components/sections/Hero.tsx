@@ -45,12 +45,12 @@ const EYEBROW_SIZE_CLASS: Record<SizeKey, string> = {
 };
 
 const TITLE_SIZE_CLASS: Record<SizeKey, string> = {
-  xs: "text-2xl md:text-3xl lg:text-4xl",
-  sm: "text-3xl md:text-4xl lg:text-5xl",
-  md: "text-5xl md:text-7xl lg:text-8xl",
-  lg: "text-6xl md:text-8xl lg:text-9xl",
-  xl: "text-7xl md:text-9xl lg:text-[10rem]",
-  "2xl": "text-8xl md:text-[10rem] lg:text-[12rem]",
+  xs: "text-2xl md:text-3xl lg:text-[3.28em]",
+  sm: "text-3xl md:text-[3.28em] lg:text-[4.07em]",
+  md: "text-[3.28em] md:text-[4.07em] lg:text-[5.07em]",
+  lg: "text-[4.07em] md:text-[5.07em] lg:text-[6em]",
+  xl: "text-[5.07em] md:text-[6em] lg:text-[7em]",
+  "2xl": "text-[6em] md:text-[7em] lg:text-[8em]",
 };
 
 const normalizeSize = (v: string, fallback: SizeKey = "md"): SizeKey =>
@@ -374,10 +374,10 @@ export const Hero = () => {
       <div className="container-luxe relative z-10 pt-28 pb-20">
         <div key={activeSlide} className="max-w-3xl">
           <p className={`eyebrow mt-12 animate-fade-in whitespace-pre-line font-bold ${EYEBROW_SIZE_CLASS[current.sizeEyebrow]}`} style={{ color: current.colorEyebrow }}>{current.eyebrow}</p>
-          <h1 className={`mt-6 font-serif leading-[1.05] animate-fade-up ${TITLE_SIZE_CLASS[current.sizeTitle]}`} style={{ color: current.colorTitle }}>
+          <h2 className={`mt-6 font-serif font-medium uppercase leading-[0.964] tracking-[-0.025em] animate-fade-up ${TITLE_SIZE_CLASS[current.sizeTitle]}`} style={{ color: current.colorTitle }}>
             {current.title}
             {current.accent ? (<><br /><span style={{ color: current.colorAccent }}>{current.accent}</span></>) : null}
-          </h1>
+          </h2>
         </div>
 
         {/* Indicateurs du carrousel masqués. */}

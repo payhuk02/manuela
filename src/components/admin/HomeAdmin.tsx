@@ -16,7 +16,25 @@ const ABOUT_P5 =
 
 const GROUPS: GroupDef[] = [
   {
-    label: "Hero",
+    label: "Hero — Intro statique (portrait + texte)",
+    keys: [
+      { key: "hero.static.show", label: "Afficher le hero statique", defaultValue: "oui" },
+      { key: "hero.static.image", label: "Portrait (URL) — laissez vide pour l'image par défaut", defaultValue: "", clearable: true },
+      {
+        key: "hero.static.tagline",
+        label: "Accroche",
+        multiline: true,
+        defaultValue: "Un cabinet d'avocat. Des compétences, des engagements.",
+      },
+      { key: "hero.static.name", label: "Nom", defaultValue: "Maître Manuela DIABATE" },
+      { key: "hero.static.title", label: "Titre / Barreau", defaultValue: "Avocate au Barreau de Paris" },
+      { key: "hero.static.motto", label: "Devise (italique)", defaultValue: "Défendre vos intérêts, avant tout" },
+      { key: "hero.static.cta", label: "Bouton — libellé", defaultValue: "Contactez le Cabinet" },
+      { key: "hero.expertisesHeading", label: "Titre entre les deux heroes", defaultValue: "NOS EXPERTISES" },
+    ],
+  },
+  {
+    label: "Hero — Carrousel",
     keys: [
       { key: "hero.eyebrow", label: "Eyebrow", defaultValue: "Conseil & Contentieux" },
       { key: "hero.titleLine1", label: "Titre — ligne 1", defaultValue: "CABINET" },

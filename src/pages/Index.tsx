@@ -1,6 +1,8 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FloatingActions } from "@/components/FloatingActions";
+import { StaticHero } from "@/components/sections/StaticHero";
+import { ExpertisesHeading } from "@/components/sections/ExpertisesHeading";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Strengths } from "@/components/sections/Strengths";
@@ -110,6 +112,8 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main>
+        <StaticHero />
+        <ExpertisesHeading />
         <Hero />
         <About />
         <Strengths />
