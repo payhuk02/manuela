@@ -24,6 +24,7 @@ import { UsersAdmin } from "@/components/admin/UsersAdmin";
 import { LandingPagesAdmin } from "@/components/admin/LandingPagesAdmin";
 import { BusinessCardAdmin } from "@/components/admin/BusinessCardAdmin";
 import { ThemeAdmin } from "@/components/admin/ThemeAdmin";
+import { StatsAdmin } from "@/components/admin/StatsAdmin";
 
 import {
   LogOut,
@@ -43,6 +44,7 @@ import {
   Inbox,
   QrCode,
   Palette,
+  BarChart3,
 } from "lucide-react";
 import {
   Sidebar,
@@ -81,9 +83,11 @@ type TabKey =
   | "landing_pages"
   | "business_card"
   | "users"
-  | "theme";
+  | "theme"
+  | "stats";
 
 const NAV: { key: TabKey; label: string; icon: typeof FileText; section: string; adminOnly?: boolean }[] = [
+  { key: "stats", label: "Statistiques", icon: BarChart3, section: "/admin" },
   { key: "home", label: "Page d'accueil", icon: Home, section: "/" },
   { key: "cabinet", label: "Page Cabinet", icon: Building, section: "/cabinet" },
   { key: "expertises", label: "Expertises (fiches)", icon: Sparkles, section: "/expertises" },
@@ -109,7 +113,7 @@ const NAV: { key: TabKey; label: string; icon: typeof FileText; section: string;
 
 const Admin = () => {
   const { session, isStaff, isAdmin, loading, signOut, user } = useAuth();
-  const [tab, setTab] = useState<TabKey>("home");
+  const [tab, setTab] = useState<TabKey>("stats");
   const [serverCheck, setServerCheck] = useState<"pending" | "allowed" | "denied">("pending");
 
   useEffect(() => {
@@ -225,6 +229,7 @@ const Admin = () => {
           </header>
 
           <main className="flex-1 p-4 md:p-8 overflow-x-hidden">
+            {tab === "stats" && <StatsAdmin />}
             {tab === "home" && <HomeAdmin />}
             {tab === "header_footer" && <HeaderFooterAdmin />}
             {tab === "theme" && <ThemeAdmin />}
