@@ -53,7 +53,8 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks(id) {
           if (!id.includes("node_modules")) return;
-          if (id.includes("/recharts/") || id.includes("/d3-")) return "charts";
+          // Do not isolate recharts/d3: splitting them causes TDZ/circular-init
+          // crashes in production ("Cannot access 's' before initialization").
           if (id.includes("/@tiptap/") || id.includes("/prosemirror-")) return "editor";
           if (
             id.includes("/react/") ||

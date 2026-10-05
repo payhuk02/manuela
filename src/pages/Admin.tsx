@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,10 @@ import { UsersAdmin } from "@/components/admin/UsersAdmin";
 import { LandingPagesAdmin } from "@/components/admin/LandingPagesAdmin";
 import { BusinessCardAdmin } from "@/components/admin/BusinessCardAdmin";
 import { ThemeAdmin } from "@/components/admin/ThemeAdmin";
-import { StatsAdmin } from "@/components/admin/StatsAdmin";
+
+const StatsAdmin = lazy(() =>
+  import("@/components/admin/StatsAdmin").then((m) => ({ default: m.StatsAdmin })),
+);
 
 import {
   LogOut,
@@ -229,7 +232,11 @@ const Admin = () => {
           </header>
 
           <main className="flex-1 p-4 md:p-8 overflow-x-hidden">
-            {tab === "stats" && <StatsAdmin />}
+            {tab === "stats" && (
+              <Suspense fallback={<p className="text-sm text-muted-foreground">Chargement des statistiques…</p>}>
+                <StatsAdmin />
+              </Suspense>
+            )}
             {tab === "home" && <HomeAdmin />}
             {tab === "header_footer" && <HeaderFooterAdmin />}
             {tab === "theme" && <ThemeAdmin />}
