@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { SiteDataProvider } from "@/hooks/SiteDataContext";
 import { SiteSeoInjector } from "@/components/SiteSeoInjector";
+import { PageViewTracker } from "@/components/PageViewTracker";
 import NotFound from "@/pages/NotFound";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { PageTransition } from "@/components/PageTransition";
@@ -34,6 +35,7 @@ function Providers({ children }: { children: ReactNode }) {
               <SiteDataProvider>
                 <Suspense fallback={<RouteFallback />}>{children}</Suspense>
                 <SiteSeoInjector />
+                <PageViewTracker />
                 <CustomCursor />
                 <SiteThemeInjector />
               </SiteDataProvider>

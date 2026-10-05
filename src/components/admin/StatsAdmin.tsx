@@ -33,6 +33,7 @@ import {
   MessageCircle,
   Heart,
   TrendingUp,
+  Eye,
 } from "lucide-react";
 
 type ContactRow = {
@@ -71,10 +72,36 @@ type ExpertiseRow = { id: string; published: boolean };
 type TeamRow = { id: string; published: boolean };
 type LandingRow = { id: string; published: boolean };
 
+type VisitStats = {
+  total_visits: number;
+  total_visitors: number;
+  visits_month: number;
+  visitors_month: number;
+  visits_window: number;
+  visitors_window: number;
+  daily: { date: string; count: number }[];
+  top_paths: { path: string; count: number }[];
+};
+
+const EMPTY_VISITS: VisitStats = {
+  total_visits: 0,
+  total_visitors: 0,
+  visits_month: 0,
+  visitors_month: 0,
+  visits_window: 0,
+  visitors_window: 0,
+  daily: [],
+  top_paths: [],
+};
+
 const DAYS = 30;
 
 const contactsChartConfig = {
   count: { label: "Demandes", color: "hsl(var(--primary))" },
+} satisfies ChartConfig;
+
+const visitsChartConfig = {
+  count: { label: "Visites", color: "hsl(var(--primary))" },
 } satisfies ChartConfig;
 
 const engagementChartConfig = {
@@ -176,6 +203,8 @@ export function StatsAdmin() {
   const [expertises, setExpertises] = useState<ExpertiseRow[]>([]);
   const [team, setTeam] = useState<TeamRow[]>([]);
   const [landings, setLandings] = useState<LandingRow[]>([]);
+  const [visits, setVisits] = useState<VisitStats>(EMPTY_VISITS);
+  const [visitsReady, setVisitsReady] = useState(true);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -205,6 +234,12 @@ export function StatsAdmin() {
         .from("article_interaction_counts")
         .select("article_id, likes_count, shares_count, comments_count")
         .then((r) => ({ ...r, key: "interactions" })),
+      (supabase as any)
+        .rpc("get_site_visit_stats", { _days: DAYS })
+        .then((r: { error: { message: string } | null; data: unknown }) => ({
+          ...r,
+          key: "visits",
+        })),
     ];
 
     if (isAdmin) {
@@ -222,10 +257,12 @@ export function StatsAdmin() {
     const results = await Promise.all(queries);
     setLoading(false);
 
-    const errors = results.filter((r) => r.error);
+    const errors = results.filter((r) => r.error && r.key !== "visits");
     if (errors.length) {
       toast.error(errors[0].error!.message);
     }
+    const visitsResult = results.find((r) => r.key === "visits");
+    setVisitsReady(!visitsResult?.error);
 
     for (const r of results) {
       if (r.error) continue;
@@ -251,6 +288,20 @@ export function StatsAdmin() {
         case "contacts":
           setContacts((r.data as ContactRow[]) ?? []);
           break;
+        case "visits": {
+          const raw = r.data as VisitStats | null;
+          setVisits(
+            raw
+              ? {
+                  ...EMPTY_VISITS,
+                  ...raw,
+                  daily: Array.isArray(raw.daily) ? raw.daily : [],
+                  top_paths: Array.isArray(raw.top_paths) ? raw.top_paths : [],
+                }
+              : EMPTY_VISITS,
+          );
+          break;
+        }
       }
     }
   }, [isAdmin]);
@@ -285,6 +336,23 @@ export function StatsAdmin() {
 
   const contactsSeries = useMemo(() => buildLastDaysSeries(contacts, DAYS), [contacts]);
   const chatsSeries = useMemo(() => buildLastDaysSeries(chats, DAYS), [chats]);
+  const visitsSeries = useMemo(
+    () =>
+      (visits.daily ?? []).map((d) => ({
+        date: d.date,
+        label: formatDayLabel(d.date),
+        count: d.count,
+      })),
+    [visits.daily],
+  );
+  const topPaths = useMemo(
+    () =>
+      (visits.top_paths ?? []).map((p) => ({
+        name: p.path.length > 32 ? `${p.path.slice(0, 32)}…` : p.path,
+        value: p.count,
+      })),
+    [visits.top_paths],
+  );
 
   const contactStatusData = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -350,7 +418,7 @@ export function StatsAdmin() {
         <div>
           <h2 className="font-serif text-3xl text-primary">Statistiques</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Vue d’ensemble de l’activité du site : contacts, contenus et engagement.
+            Vue d’ensemble de l’activité du site : visites, contacts, contenus et engagement.
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={load} disabled={loading}>
@@ -359,7 +427,21 @@ export function StatsAdmin() {
         </Button>
       </div>
 
+      {!visitsReady ? (
+        <div className="rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          Le compteur de visites sera actif après application de la migration SQL
+          <code className="mx-1 text-xs">site_page_views</code>
+          dans le projet Supabase (SQL Editor).
+        </div>
+      ) : null}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <KpiCard
+          title="Visites du site"
+          value={visits.total_visits}
+          hint={`${visits.visits_month} ce mois · ${visits.total_visitors} visiteurs uniques`}
+          icon={Eye}
+        />
         {isAdmin ? (
           <KpiCard
             title="Demandes de contact"
@@ -407,6 +489,33 @@ export function StatsAdmin() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-serif text-xl text-primary">Visites — 30 derniers jours</CardTitle>
+            <CardDescription>
+              Pages vues anonymisées ({visits.visits_window} visites · {visits.visitors_window} visiteurs).
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={visitsChartConfig} className="aspect-[16/9] w-full">
+              <AreaChart data={visitsSeries} margin={{ left: 8, right: 8, top: 8, bottom: 0 }}>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                <XAxis dataKey="label" tickLine={false} axisLine={false} minTickGap={24} />
+                <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={28} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Area
+                  type="monotone"
+                  dataKey="count"
+                  stroke="var(--color-count)"
+                  fill="var(--color-count)"
+                  fillOpacity={0.18}
+                  strokeWidth={2}
+                />
+              </AreaChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
         {isAdmin ? (
           <Card>
             <CardHeader>
@@ -522,6 +631,37 @@ export function StatsAdmin() {
                 <BarChart data={contactExpertiseData} margin={{ left: 8, right: 8, top: 8, bottom: 24 }}>
                   <CartesianGrid vertical={false} strokeDasharray="3 3" />
                   <XAxis dataKey="name" tickLine={false} axisLine={false} interval={0} angle={-20} textAnchor="end" height={50} />
+                  <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={28} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="value" fill="var(--color-value)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        ) : null}
+
+        {topPaths.length > 0 ? (
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="font-serif text-xl text-primary">Pages les plus visitées</CardTitle>
+              <CardDescription>Sur les 30 derniers jours.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{ value: { label: "Visites", color: "hsl(var(--primary))" } }}
+                className="aspect-[21/9] w-full"
+              >
+                <BarChart data={topPaths} margin={{ left: 8, right: 8, top: 8, bottom: 40 }}>
+                  <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="name"
+                    tickLine={false}
+                    axisLine={false}
+                    interval={0}
+                    angle={-18}
+                    textAnchor="end"
+                    height={60}
+                  />
                   <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={28} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="value" fill="var(--color-value)" radius={[4, 4, 0, 0]} />

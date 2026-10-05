@@ -832,6 +832,33 @@ export type Database = {
         }
         Relationships: []
       }
+      site_page_views: {
+        Row: {
+          created_at: string
+          id: string
+          lang: string
+          path: string
+          referrer: string | null
+          visitor_key: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lang?: string
+          path: string
+          referrer?: string | null
+          visitor_key: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lang?: string
+          path?: string
+          referrer?: string | null
+          visitor_key?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -961,6 +988,7 @@ export type Database = {
           welcome_message_fr: string
         }[]
       }
+      get_site_visit_stats: { Args: { _days?: number }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
